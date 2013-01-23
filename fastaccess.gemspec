@@ -7,8 +7,8 @@ require "fastaccess/version"
 Gem::Specification.new do |s|
   s.name        = "fastaccess"
   s.version     = Fastaccess::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
+  s.authors     = ["Tim Reddehase"]
+  s.email       = ["robustus@rightsrestricted.com"]
   s.homepage    = "TODO"
   s.summary     = "TODO: Summary of Fastaccess."
   s.description = "TODO: Description of Fastaccess."
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.11"
+  s.add_dependency "redis", "~> 3.0.2"
 
   s.add_development_dependency "sqlite3"
 end
