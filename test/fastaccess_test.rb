@@ -17,4 +17,19 @@ class FastaccessTest < ActiveSupport::TestCase
     assert_not_equal string.simple_string, string.other_string
   end
 
+  def test_fastaccess_type_guessing_feature_on_array
+    string = SimpleString.create
+    assert_equal string.simple_array.class, Array
+  end
+
+  
+  def test_fastaccess_type_guessing_feature_on_hash
+    string = SimpleString.create
+    assert_equal string.simple_hash.class, Hash
+  end
+
+  def test_fastaccess_type_guessing_feature_on_string
+    string = SimpleString.create
+    assert_equal string.simple_string.class, String
+  end
 end
