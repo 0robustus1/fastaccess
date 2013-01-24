@@ -32,4 +32,15 @@ class FastaccessTest < ActiveSupport::TestCase
     string = SimpleString.create
     assert_equal string.simple_string.class, String
   end
+
+  def test_autoupdate_on_fastaccess
+    string = SimpleString.create
+    test_string = "foobar"
+    default = string.modifiable_string
+    string.some_string = test_string
+    string.save
+    assert_not_equal default, string.modifiable_string
+    assert string.modifiable_string.include?(test_string)
+  end
+
 end
