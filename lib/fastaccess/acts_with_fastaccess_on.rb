@@ -15,8 +15,9 @@ module Fastaccess
             if !method_defined?(alias_name)
               alias_method alias_name, method 
               define_method method do |*args|
-                redis_id = "#{method}_#{self.class}-#{self.id}"
-                if $redis.exists redis_id
+                fastaccess_id = Fastaccess.id_for(self)
+                redis_id = "#{method}_#{fastaccess_id}"
+                if $redis.exists(redis_id) && Fastaccess.update_check(self)
                   response = $redis.get(redis_id)
                   begin
                     return JSON.parse response
@@ -25,6 +26,7 @@ module Fastaccess
                   end
                 else
                   response = method(alias_name).call(*args)
+                  Fastaccess.update_info self
                   $redis.set(redis_id, (response.is_a? String) ? response : response.to_json)
                   return response
                 end
