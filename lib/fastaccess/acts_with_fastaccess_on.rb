@@ -17,10 +17,15 @@ module Fastaccess
               define_method method do |*args|
                 redis_id = "#{method}_#{self.class}-#{self.id}"
                 if $redis.exists redis_id
-                  return $redis.get redis_id
+                  response = $redis.get(redis_id)
+                  begin
+                    return JSON.parse response
+                  rescue JSON::ParserError
+                    return response
+                  end
                 else
                   response = method(alias_name).call(*args)
-                  $redis.set redis_id, response
+                  $redis.set(redis_id, (response.is_a? String) ? response : response.to_json)
                   return response
                 end
               end
