@@ -43,4 +43,12 @@ class FastaccessTest < ActiveSupport::TestCase
     assert string.modifiable_string.include?(test_string)
   end
 
+  def test_manual_update_on_fastaccess
+    string = SimpleString.create
+    test_string = "foobar"
+    default = string.changeable_string
+    assert_equal default, string.changeable_string(test_string)
+    Fastaccess::Fastaccess.update_content string, :on => :changeable_string, :arguments => [test_string]
+    assert_not_equal default, string.changeable_string(test_string)
+  end
 end

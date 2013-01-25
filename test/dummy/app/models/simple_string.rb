@@ -5,6 +5,7 @@ class SimpleString < ActiveRecord::Base
   acts_with_fastaccess_on :simple_array
   acts_with_fastaccess_on :simple_hash
   acts_with_fastaccess_on :modifiable_string
+  acts_with_fastaccess_on :changeable_string
 
   attr_accessible :some_string
 
@@ -26,6 +27,10 @@ class SimpleString < ActiveRecord::Base
 
   def simple_hash
     {:firstly => "we'll do this", :secondly => "we'll try this"}
+  end
+
+  def changeable_string(string="this is default")
+    return string
   end
 
 end
