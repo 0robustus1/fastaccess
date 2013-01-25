@@ -11,7 +11,7 @@ module Fastaccess
         define_singleton_method :method_added do |on_method|
           if Fastaccess.registered? self, on_method
             method = on_method
-            alias_name = :"aliased_#{method}"
+            alias_name = Fastaccess.alias_for method
             if !method_defined?(alias_name)
               alias_method alias_name, method 
               define_method method do |*args|
