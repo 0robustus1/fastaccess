@@ -51,4 +51,13 @@ class FastaccessTest < ActiveSupport::TestCase
     Fastaccess::Fastaccess.update_content string, :on => :changeable_string, :arguments => [test_string]
     assert_not_equal default, string.changeable_string(test_string)
   end
+
+  def test_manual_update_on_fastaccess_with_mixin
+    string = SimpleString.create
+    test_string = "foobar"
+    default = string.changeable_string
+    assert_equal default, string.changeable_string(test_string)
+    string.update_on :changeable_string, test_string
+    assert_not_equal default, string.changeable_string(test_string)
+  end
 end
