@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Fastaccess::VERSION
   s.authors     = ["Tim Reddehase"]
   s.email       = ["robustus@rightsrestricted.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Fastaccess."
-  s.description = "TODO: Description of Fastaccess."
+  s.homepage    = "http://rightsrestricted.com/software/fastaccess"
+  s.summary     = "allows storing of generated content via redis"
+  s.description = "rails model-helper to store generated content in redis, for fastaccess"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
