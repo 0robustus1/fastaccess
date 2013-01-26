@@ -6,6 +6,15 @@ module Fastaccess
     end
  
     module ClassMethods
+      # registers the pertaining method as one, which return value
+      # is provided through redis.
+      # This is for fast access of otherwise generated content
+      # with a high reading/writing ratio.
+      #
+      # @param [Symbol] method_name denoting the pertaining method
+      #                 this method shouldn't be defined beforehand.
+      # @param [Hash] options is basic options hash. 
+      #               currently has no effect on execution.
       def acts_with_fastaccess_on(method_name, options = {})
         Fastaccess.register_on self, method_name
         define_singleton_method :method_added do |on_method|
