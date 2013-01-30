@@ -81,14 +81,14 @@ module Fastaccess
     # @param [Object] content should be basic content
     #                 e.g. String, Hash, Array or Numbers.
     def self.set(redis_id, content)
-      $redis.set(redis_id, (content.is_a? String) ? content : content.to_json)
+      redis.set(redis_id, (content.is_a? String) ? content : content.to_json)
     end
 
     # getting redis content
     # @param [String] redis_id the id
     # @return [Object] stored content
     def self.get(redis_id)
-      response = $redis.get(redis_id)
+      response = redis.get(redis_id)
       begin
         return JSON.parse response
       rescue JSON::ParserError
@@ -131,5 +131,28 @@ module Fastaccess
         self.set("#{method}_#{id_for(obj)}", content)
       end
     end
+
+    # setting up the environment for fastaccess 
+    def self.setup(&block)
+      instance_eval &block if block_given?
+    end
+
+    # setting the global redis instance for fastaccess.
+    # @param [Redis] redis_instance The Connection to a redis server
+    def self.set_redis(redis_instance)
+      if redis_instance
+        @@redis = redis_instance 
+      else
+        @@redis = $redis if $redis
+      end
+    end
+
+    # getting the redis instance 
+    # @return [Redis] the instance
+    def self.redis
+      @@redis
+    end
+
   end
+
 end

@@ -26,8 +26,8 @@ module Fastaccess
               define_method method do |*args|
                 fastaccess_id = Fastaccess.id_for(self)
                 redis_id = "#{method}_#{fastaccess_id}"
-                if $redis.exists(redis_id) && Fastaccess.update_check(self)
-                  response = $redis.get(redis_id)
+                if Fastaccess.redis.exists(redis_id) && Fastaccess.update_check(self)
+                  response = Fastaccess.redis.get(redis_id)
                   begin
                     return JSON.parse response
                   rescue JSON::ParserError
@@ -36,7 +36,7 @@ module Fastaccess
                 else
                   response = method(alias_name).call(*args)
                   Fastaccess.update_info self
-                  $redis.set(redis_id, (response.is_a? String) ? response : response.to_json)
+                  Fastaccess.redis.set(redis_id, (response.is_a? String) ? response : response.to_json)
                   return response
                 end
               end
