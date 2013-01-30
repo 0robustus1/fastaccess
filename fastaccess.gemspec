@@ -9,11 +9,11 @@ Gem::Specification.new do |s|
   s.version     = Fastaccess::VERSION
   s.authors     = ["Tim Reddehase"]
   s.email       = ["robustus@rightsrestricted.com"]
-  s.homepage    = "http://rightsrestricted.com/software/fastaccess"
+  s.homepage    = "https://github.com/0robustus1/fastaccess"
   s.summary     = "allows storing of generated content via redis"
   s.description = "rails model-helper to store generated content in redis, for fastaccess"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.11"
