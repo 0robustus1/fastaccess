@@ -39,14 +39,14 @@ Now, in your project you will have to use the gem-provided
 as registered with fastaccess for caching.
 
 ```ruby
-    class Post < ActiveRecord::Base
-      attr_accessible :title, :body
-      acts_with_fastaccess_on :markdown_body
+class Post < ActiveRecord::Base
+  attr_accessible :title, :body
+  acts_with_fastaccess_on :markdown_body
 
-      def markdown_body
-        markdown(self.body)
-      end
-    end
+  def markdown_body
+    markdown(self.body)
+  end
+end
 ```
 
 In this example a Model named *Post* is defined which has title and
