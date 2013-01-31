@@ -97,3 +97,11 @@ can also call
 ```ruby
 Fastaccess::Fastaccess.update_content @post, :on => :tag_list, :arguments => []
 ```
+
+## Features
+
+### planned features
+
+- disable auto-update via option setting (planned for *0.0.2*)
+- more update flexibility
+  - e.g. custom update-constraints instead of calling `update_content` manually
