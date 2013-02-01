@@ -6,6 +6,7 @@ class SimpleString < ActiveRecord::Base
   acts_with_fastaccess_on :simple_hash
   acts_with_fastaccess_on :modifiable_string
   acts_with_fastaccess_on :changeable_string
+  acts_with_fastaccess_on :non_autoupdateable_string, :auto_update => false
   include Fastaccess::Mixins
 
   attr_accessible :some_string
@@ -32,6 +33,10 @@ class SimpleString < ActiveRecord::Base
 
   def changeable_string(string="this is default")
     return string
+  end
+
+  def non_autoupdateable_string
+    return "text is something"
   end
 
 end

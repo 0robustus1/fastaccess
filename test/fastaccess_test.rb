@@ -60,4 +60,17 @@ class FastaccessTest < ActiveSupport::TestCase
     string.update_on :changeable_string, test_string
     assert_not_equal default, string.changeable_string(test_string)
   end
+
+  def test_deactivation_of_auto_update_functionality
+    string = SimpleString.create
+    test_string = "foobar"
+    default = string.non_autoupdateable_string
+    string.some_string = test_string
+    string.save
+    assert_equal default, string.non_autoupdateable_string
+    assert( ! string.non_autoupdateable_string.include?(test_string) )
+    puts
+    puts Fastaccess::Fastaccess.registered_options.inspect
+  end
+
 end
