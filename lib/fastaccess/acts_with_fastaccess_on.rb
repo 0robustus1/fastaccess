@@ -16,7 +16,8 @@ module Fastaccess
       # @param [Hash] options is basic options hash. 
       #               currently has no effect on execution.
       def acts_with_fastaccess_on(method_name, options = {})
-        Fastaccess.register_on self, method_name
+        Fastaccess.register_on self, method_name, options
+        # options = Fastaccess.merge_defaults(options)
         define_singleton_method :method_added do |on_method|
           if Fastaccess.registered? self, on_method
             method = on_method
@@ -26,7 +27,9 @@ module Fastaccess
               define_method method do |*args|
                 fastaccess_id = Fastaccess.id_for(self)
                 redis_id = "#{method}_#{fastaccess_id}"
-                if Fastaccess.redis.exists(redis_id) && Fastaccess.update_check(self)
+                opts = Fastaccess.options_for(self, method)
+                content_current = opts[:auto_update] ? Fastaccess.update_check(self) : true
+                if Fastaccess.redis.exists(redis_id) && content_current
                   response = Fastaccess.redis.get(redis_id)
                   begin
                     return JSON.parse response

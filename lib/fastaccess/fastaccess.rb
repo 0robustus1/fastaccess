@@ -6,22 +6,35 @@ module Fastaccess
   # doesn't need to be located elsewhere.
   # (e.g. like mixins)
   class Fastaccess
+
+    # the default options for the
+    # acts_with_fastaccess_on method.
+    ACTS_OPTIONS_DEFAULTS = {
+      :auto_update => true
+    }
+
     @@fastaccess_on = Hash.new Set.new
     @@last_updated  = Hash.new
+    @@registered_options = Hash.new ACTS_OPTIONS_DEFAULTS
 
     # accessor for the actual registration hash.
     cattr_accessor :fastaccess_on
 
     # hash for monitoring updates on registered objects.
     cattr_accessor :last_updated
-    
+
+    # hash for options of registered methods
+    cattr_accessor :registered_options
+
     # registers a method, defined on a certain class,
     # as being handled by fastaccess.
     # @param [Class] class_name is the actual Class.
     # @param [Symbol] method_name is the symbol
     #                 denoting the actual method
-    def self.register_on(class_name, method_name)
+    def self.register_on(class_name, method_name, options={})
       self.fastaccess_on[class_name] << method_name
+      id = options_id_for(class_name, method_name)
+      self.registered_options[id] = self.registered_options[id].merge(options)
     end
 
     # inquires if a certain method, which is
@@ -32,6 +45,17 @@ module Fastaccess
     #                 denoting the actual method
     def self.registered?(class_name, method_name)
       self.fastaccess_on[class_name].include? method_name
+    end
+
+    # gets the options for a class_name, method_name
+    # pair
+    # @param [Class] class_name is the actual Class.
+    # @param [Symbol] method_name is the symbol
+    #                 denoting the actual method
+    # @return [Hash] the options for the pair
+    def self.options_for(class_name, method_name)
+      id = options_id_for(class_name, method_name)
+      self.registered_options[id]
     end
 
     # checks if a class_instance seems to be
@@ -45,6 +69,7 @@ module Fastaccess
     # @return [Boolean] is true if everything is up to date.
     def self.update_check(class_instance)
       id = self.id_for(class_instance)
+      return true if self.last_updated[id] == false
       class_instance.updated_at == self.last_updated[id]
     end
     
@@ -57,15 +82,26 @@ module Fastaccess
     #                 an actual Rails Model.
     def self.update_info(class_instance)
       id = self.id_for(class_instance)
-      self.last_updated[id] = class_instance.updated_at
+      unless self.last_updated[id] == false
+        self.last_updated[id] = class_instance.updated_at
+      end
     end
 
     # creates a fastaccess id for a class_instance
     # @param [Object] class_instance any Object,
     #                 preferably a decendent of
     #                 an actual Rails Model.
+    # @return [String] the identifier
     def self.id_for(class_instance)
       "#{class_instance.class}-#{class_instance.id}"
+    end
+
+    # creates the id for the registered_options hash
+    # @param [Class] class_name a class singleton object
+    # @param [Symbol] method_name is the identifying symbol of a method
+    # @return [String] the identifier
+    def self.options_id_for(class_name, method_name)
+      "#{class_name}-#{method_name}"
     end
 
     # returns the aliased name for
@@ -151,6 +187,16 @@ module Fastaccess
     # @return [Redis] the instance
     def self.redis
       @@redis
+    end
+
+    # merges the, hopefully, reasonable
+    # defaults with the supplied options
+    # hash
+    # @param [Hash] options the pertaining options
+    #               supplied by the user
+    # @return [Hash] the merged options hash
+    def self.merge_defaults(options)
+      ACTS_OPTIONS_DEFAULTS.merge(options)
     end
 
   end
