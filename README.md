@@ -102,7 +102,7 @@ Fastaccess::Fastaccess.update_content @post, :on => :tag_list, :arguments => []
 
 ### planned features
 
-- disable auto-update via option setting (planned for *0.0.2*)
+- ~~disable auto-update via option setting (planned for *0.0.2*)~~ *implemented*
 - more update flexibility
   - e.g. custom update-constraints instead of calling `update_content` manually
 
