@@ -12,7 +12,7 @@ html.
 
 And this is why fastaccess exists. 
 It modifies any given method, which generates content,
-and stores it in a [redis][1] database.
+and stores it in a [redis][redis] database.
 If this content solely depends on a model attribute,
 for example like the *body* in a blog post, it will
 be auto updated, if the underlying model attribute
@@ -134,4 +134,5 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [mit]: http://opensource.org/licenses/MIT
+[redis]: http://redis.io/
 [1]: http://rightsrestricted.com
