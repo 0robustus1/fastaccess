@@ -105,6 +105,14 @@ Fastaccess::Fastaccess.update_content @post, :on => :tag_list, :arguments => []
 - ~~disable auto-update via option setting (planned for *0.0.2*)~~ *implemented*
 - more update flexibility
   - e.g. custom update-constraints instead of calling `update_content` manually
+- **version**  
+  sometimes parameters passed to the watched method aren't arbitrary,
+  but contain some sort of state. So some output-*versions* of the
+  generated content are used, with evenly distributed odds.
+  Fastaccess should allow for these versions to exist in memory.
+  This means, that certain *sets of arguments* are bundling
+  a so called version, which should be accessible via redis for
+  more flexibility.
 
 ## License
 
