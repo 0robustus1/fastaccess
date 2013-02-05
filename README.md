@@ -98,6 +98,37 @@ can also call
 Fastaccess::Fastaccess.update_content @post, :on => :tag_list, :arguments => []
 ```
 
+## Configuring Fastaccess
+
+### Initializers
+
+Fastaccess comes with a generator for an initializer file. You can
+run it by calling:
+
+```
+rails generate fastaccess:initialize
+```
+
+This will create `config/initializers/fastaccess.rb`, which allows you to
+set the redis-connector instance, which will be used to communicate
+with redis. If you've just installed redis and are running
+it with default settings, the defaults from the initializer file
+should work nicely. 
+
+### Configure acts_with...
+
+If you need to call `update_content` manually (either via the mixin
+version or the global one), you probably don't want the unnecessary
+updates, which are being triggered by every update on the pertaining
+record (and the subsequent method-call). You can deactivate it 
+for specific method, by passing it via the options hash.
+
+```ruby
+  acts_with_fastaccess_on :markdown, :auto_update => false
+```
+
+
+
 ## Features
 
 ### planned features
