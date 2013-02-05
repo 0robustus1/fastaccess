@@ -69,8 +69,6 @@ class FastaccessTest < ActiveSupport::TestCase
     string.save
     assert_equal default, string.non_autoupdateable_string
     assert( ! string.non_autoupdateable_string.include?(test_string) )
-    puts
-    puts Fastaccess::Fastaccess.registered_options.inspect
   end
 
 end
