@@ -7,6 +7,7 @@ class SimpleString < ActiveRecord::Base
   acts_with_fastaccess_on :modifiable_string
   acts_with_fastaccess_on :changeable_string
   acts_with_fastaccess_on :non_autoupdateable_string, :auto_update => false
+  acts_with_fastaccess_on :versioned_string, :auto_update => false, :versions => [:and, :or]
   include Fastaccess::Mixins
 
   attr_accessible :some_string
@@ -37,6 +38,15 @@ class SimpleString < ActiveRecord::Base
 
   def non_autoupdateable_string
     return "text is something"
+  end
+
+  def versioned_string(symbol)
+    case symbol
+    when :and
+      "simple is easy AND easy is fun"
+    when :or
+      "complicated isn't nice or isnt good"
+    end
   end
 
 end

@@ -71,4 +71,11 @@ class FastaccessTest < ActiveSupport::TestCase
     assert( ! string.non_autoupdateable_string.include?(test_string) )
   end
 
+  def test_basic_versioning_functionality
+    string = SimpleString.create
+    version_one = :and
+    version_two = :or
+    assert_not_equal string.versioned_string(:and), string.versioned_string(:or)
+  end
+
 end
