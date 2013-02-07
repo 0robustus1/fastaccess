@@ -25,8 +25,9 @@ module Fastaccess
             if !method_defined?(alias_name)
               alias_method alias_name, method 
               define_method method do |*args|
-                fastaccess_id = Fastaccess.id_for(self)
-                redis_id = "#{method}_#{fastaccess_id}"
+                # fastaccess_id = Fastaccess.id_for(self)
+                # redis_id = "#{method}_#{fastaccess_id}"
+                redis_id = Fastaccess.redis_id_for(self, method, args)
                 opts = Fastaccess.options_for(self, method)
                 content_current = opts[:auto_update] ? Fastaccess.update_check(self) : true
                 if Fastaccess.redis.exists(redis_id) && content_current

@@ -1,4 +1,5 @@
 require 'set'
+require 'digest/sha2'
 
 module Fastaccess
   # This class contains the most
@@ -10,7 +11,8 @@ module Fastaccess
     # the default options for the
     # acts_with_fastaccess_on method.
     ACTS_OPTIONS_DEFAULTS = {
-      :auto_update => true
+      :auto_update => true,
+      :versions    => [],
     }
 
     @@fastaccess_on = Hash.new Set.new
@@ -197,6 +199,33 @@ module Fastaccess
     # @return [Hash] the merged options hash
     def self.merge_defaults(options)
       ACTS_OPTIONS_DEFAULTS.merge(options)
+    end
+
+    # returns the id used by fastaccess for
+    # the storage of content in the redis database
+    # @param [Object] class_instance instance of a registered class
+    # @param [Symbol] method is a symbol denoting the called method
+    # @param [Array] args arguments supplied to the method on the call
+    def self.redis_id_for(class_instance, method, args=[])
+      opts = self.options_for(class_instance.class, method)
+      fastaccess_id = self.id_for(class_instance) 
+      base_id = "#{method}_#{fastaccess_id}"
+      return base_id if opts[:versions].empty?
+      opts[:versions].each do |version|
+        if self.match_version(version, args)
+          sha = Digest::SHA2.new << version.inspect         
+          return "#{base_id}:#{sha}"
+        end
+      end
+      base_id
+    end
+
+    private
+    # tries to match a version
+    # against given arguments
+    def self.match_version(version, args)
+      arr_version = version.is_a?(Array) ? version : [version]
+      arr_version == args
     end
 
   end
