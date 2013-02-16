@@ -8,6 +8,7 @@ class SimpleString < ActiveRecord::Base
   acts_with_fastaccess_on :changeable_string
   acts_with_fastaccess_on :non_autoupdateable_string, :auto_update => false
   acts_with_fastaccess_on :versioned_string, :auto_update => false, :versions => [:and, :or]
+  acts_with_fastaccess_on :complex_vers_string, :auto_update => false, :versions => [[:and, 1, "foo"], [:or, 5, "bar"]]
   include Fastaccess::Mixins
 
   attr_accessible :some_string
@@ -47,6 +48,10 @@ class SimpleString < ActiveRecord::Base
     when :or
       "complicated isn't nice or isnt good"
     end
+  end
+
+  def complex_vers_string(*args)
+    string = "if you use #{args[0]}(#{args[1]},0), you'll get: #{args[2]}"
   end
 
 end

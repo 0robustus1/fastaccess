@@ -78,4 +78,17 @@ class FastaccessTest < ActiveSupport::TestCase
     assert_not_equal string.versioned_string(:and), string.versioned_string(:or)
   end
 
+  def test_complex_versioning_functionality
+    string = SimpleString.create
+    version_one = [:and, 1, "foo"]
+    version_two = [:or, 5, "bar"]
+    generated_one = string.complex_vers_string(*version_one)
+    generated_two = string.complex_vers_string(*version_two)
+    assert_equal generated_one, string.complex_vers_string(*version_one)
+    assert_equal generated_two, string.complex_vers_string(*version_two)
+    assert_not_equal generated_one, generated_two
+    assert generated_one.end_with?(version_one.last)
+    assert generated_two.end_with?(version_two.last)
+  end
+
 end
