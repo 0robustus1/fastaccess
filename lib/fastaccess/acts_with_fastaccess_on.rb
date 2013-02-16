@@ -17,7 +17,6 @@ module Fastaccess
       #               currently has no effect on execution.
       def acts_with_fastaccess_on(method_name, options = {})
         Fastaccess.register_on self, method_name, options
-        # options = Fastaccess.merge_defaults(options)
         define_singleton_method :method_added do |on_method|
           if Fastaccess.registered? self, on_method
             method = on_method
@@ -25,8 +24,6 @@ module Fastaccess
             if !method_defined?(alias_name)
               alias_method alias_name, method 
               define_method method do |*args|
-                # fastaccess_id = Fastaccess.id_for(self)
-                # redis_id = "#{method}_#{fastaccess_id}"
                 redis_id = Fastaccess.redis_id_for(self, method, args)
                 opts = Fastaccess.options_for(self, method)
                 content_current = opts[:auto_update] ? Fastaccess.update_check(self) : true
