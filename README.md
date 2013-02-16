@@ -134,7 +134,9 @@ for specific method, by passing it via the options hash.
 Since the methods you will use fastaccess on, will usually generate
 content, it might be possible, that you want to use multiple
 versions of this content frequently without resorting
-to another method. You can achieve this by setting argument-groups:
+to another method. You can achieve this by setting argument-groups,
+which is an array in which each element (an argument group) refers to
+the arguments passed to the method in this version:
 
 ```ruby
   acts_with_fastaccess_on :markdown_with_opts, :versions => [
