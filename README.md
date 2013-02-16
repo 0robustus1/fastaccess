@@ -117,6 +117,8 @@ should work nicely.
 
 ### Configure acts_with...
 
+#### deactivating auto_update
+
 If you need to call `update_content` manually (either via the mixin
 version or the global one), you probably don't want the unnecessary
 updates, which are being triggered by every update on the pertaining
@@ -127,6 +129,22 @@ for specific method, by passing it via the options hash.
   acts_with_fastaccess_on :markdown, :auto_update => false
 ```
 
+#### using multiple generated versions
+
+Since the methods you will use fastaccess on, will usually generate
+content, it might be possible, that you want to use multiple
+versions of this content frequently without resorting
+to another method. You can achieve this by setting argument-groups:
+
+```ruby
+  acts_with_fastaccess_on :markdown_with_opts, :versions => [
+                                              {prevent_html:true},
+                                              {prevent_html:false}
+                                              ]
+```
+
+This will allow fastaccess to store both versions in the redis
+database. 
 
 
 ## Features
@@ -136,14 +154,14 @@ for specific method, by passing it via the options hash.
 - ~~disable auto-update via option setting (planned for *0.0.2*)~~ *implemented*
 - more update flexibility
   - e.g. custom update-constraints instead of calling `update_content` manually
-- **version**  
-  sometimes parameters passed to the watched method aren't arbitrary,
+- ~~**version**~~
+  ~~sometimes parameters passed to the watched method aren't arbitrary,
   but contain some sort of state. So some output-*versions* of the
   generated content are used, with evenly distributed odds.
   Fastaccess should allow for these versions to exist in memory.
   This means, that certain *sets of arguments* are bundling
   a so called version, which should be accessible via redis for
-  more flexibility.
+  more flexibility.~~ *implemented*
 
 ## License
 
