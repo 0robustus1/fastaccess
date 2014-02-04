@@ -11,8 +11,6 @@ class SimpleString < ActiveRecord::Base
   acts_with_fastaccess_on :complex_vers_string, :auto_update => false, :versions => [[:and, 1, "foo"], [:or, 5, "bar"]]
   include Fastaccess::Mixins
 
-  attr_accessible :some_string
-
   def simple_string
     "this is a simple string"
   end
